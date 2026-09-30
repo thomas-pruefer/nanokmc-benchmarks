@@ -1,0 +1,13 @@
+{
+  "msys2_root": "C:/msys64",
+  "msys2_bash": "C:/msys64/usr/bin/bash.exe",
+  "msys2_path_prefix": "/ucrt64/bin:/usr/bin",
+  "kmcos_python": ".venv-kmcos/Scripts/python.exe",
+  "nanokmc_exe": "build/nanokmc/nanokmc.exe",
+  "spparks_exe": "build/spparks/spk_serial.exe",
+  "kmc_lattice_root": "sources/kmc_lattice",
+  "kmc_lattice_exe": "build/kmc_lattice/kmc_lattice_fcc.exe",
+  "kmcos_root": "sources/kmcos",
+  "kmcos_compiled_src": "build/kmcos/fcc_kawasaki_otf_otf/src",
+  "source_repositories": {}
+}

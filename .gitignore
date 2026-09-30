@@ -1,0 +1,43 @@
+# Downloaded scientific dependencies, compiled artifacts and local environments.
+/sources/
+/build/
+/.venv*/
+/.env
+/.env.*
+/config/*.local.*
+
+# Named execution datasets and all generated setup/smoke/publication output.
+/run-sets/
+/logs/
+/results/
+/figures/
+
+# Python caches and local test reports.
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Native build products and editor/OS temporary files.
+*.exe
+*.dll
+*.pyd
+*.obj
+*.o
+*.mod
+*.smod
+*.a
+*.def
+*.lib
+*.pdb
+*.ilk
+*.tmp
+*.partial
+*.partial.*
+*.swp
+*~
+Thumbs.db
+.DS_Store

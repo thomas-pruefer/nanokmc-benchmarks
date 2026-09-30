@@ -1,0 +1,3 @@
+# Reproducibility checks use exact source bytes, including line endings.
+# Preserve committed bytes across Windows and other Git checkout settings.
+* -text

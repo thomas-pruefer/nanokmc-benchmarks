@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "scope": "Declared reference toolchain packages; not a complete operating-system or transitive dependency lock.",
+  "archive_authenticity": "SHA-256 identifies the retained package bytes. Detached signature files are retained in the upstream archive; their validity has not been independently established by this metadata. Verify through pacman with MSYS2 keyrings.",
+  "packages": [
+    {
+      "package": "gcc-15.3.0-1",
+      "filename": "gcc-15.3.0-1-x86_64.pkg.tar.zst",
+      "url": "https://repo.msys2.org/msys/x86_64/gcc-15.3.0-1-x86_64.pkg.tar.zst",
+      "size_bytes": 53961737,
+      "sha256": "f8e7e4bf21bb8f690058384fd6ee27bb3567edad49077e691d1f12f0a42119f1",
+      "signature_url": "https://repo.msys2.org/msys/x86_64/gcc-15.3.0-1-x86_64.pkg.tar.zst.sig",
+      "signature_sha256": "491fdd8680c960084c4e3bd42331a4d16cdf58ad8b911b130a91b479513a53bf"
+    },
+    {
+      "package": "gcc-libs-15.3.0-1",
+      "filename": "gcc-libs-15.3.0-1-x86_64.pkg.tar.zst",
+      "url": "https://repo.msys2.org/msys/x86_64/gcc-libs-15.3.0-1-x86_64.pkg.tar.zst",
+      "size_bytes": 1082211,
+      "sha256": "0d99a122c453c05ae21ba3dcea910f2e0d93d38ae067c677a112a315b0f3cec5",
+      "signature_url": "https://repo.msys2.org/msys/x86_64/gcc-libs-15.3.0-1-x86_64.pkg.tar.zst.sig",
+      "signature_sha256": "994ccac224e5a7a3c5c11e9ea11193c956bc5d1288b1be42f9fa437286542599"
+    },
+    {
+      "package": "make-4.4.1-3",
+      "filename": "make-4.4.1-3-x86_64.pkg.tar.zst",
+      "url": "https://repo.msys2.org/msys/x86_64/make-4.4.1-3-x86_64.pkg.tar.zst",
+      "size_bytes": 514683,
+      "sha256": "af0bdba17f06fe037f0194069adaa31a8fe45f1a11381501896aea1fae37bd5d",
+      "signature_url": "https://repo.msys2.org/msys/x86_64/make-4.4.1-3-x86_64.pkg.tar.zst.sig",
+      "signature_sha256": "7f53c96aeb1a29d9917e2b00e9f709fbdc5b0458e6535e88b1fed69365191265"
+    },
+    {
+      "package": "mingw-w64-ucrt-x86_64-cmake-4.4.2-2",
+      "filename": "mingw-w64-ucrt-x86_64-cmake-4.4.2-2-any.pkg.tar.zst",
+      "url": "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-cmake-4.4.2-2-any.pkg.tar.zst",
+      "size_bytes": 11052513,
+      "sha256": "a48ab920f631c58d332de3a3bfc19e1ece9a790d7923d6ddaafa0d0870e43768",
+      "signature_url": "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-cmake-4.4.2-2-any.pkg.tar.zst.sig",
+      "signature_sha256": "b22d11402f56ae9365ce388fd2f72582888ac59c7b9dc304d42a155a66db5ccb"
+    },
+    {
+      "package": "mingw-w64-ucrt-x86_64-gcc-16.2.0-3",
+      "filename": "mingw-w64-ucrt-x86_64-gcc-16.2.0-3-any.pkg.tar.zst",
+      "url": "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-gcc-16.2.0-3-any.pkg.tar.zst",
+      "size_bytes": 48655779,
+      "sha256": "1cd86e5817f6e0d7310d7cb2bb91f4a55e1256cb4ce580a0c5f2a74e013d144d",
+      "signature_url": "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-gcc-16.2.0-3-any.pkg.tar.zst.sig",
+      "signature_sha256": "3164f0b78bf142a11c62a95886ce37412ccdbb3c3fb3f5c6d97ecfb4f41c254a"
+    },
+    {
+      "package": "mingw-w64-ucrt-x86_64-gcc-fortran-16.2.0-3",
+      "filename": "mingw-w64-ucrt-x86_64-gcc-fortran-16.2.0-3-any.pkg.tar.zst",
+      "url": "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-gcc-fortran-16.2.0-3-any.pkg.tar.zst",
+      "size_bytes": 15912585,
+      "sha256": "2e534e8d45158425d80da00840bd712795d9c64e9c721fadd52cc8504d6817f7",
+      "signature_url": "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-gcc-fortran-16.2.0-3-any.pkg.tar.zst.sig",
+      "signature_sha256": "6266a0616d4f4fd60b99e30ec4833b58f60d2e899d6dc07e1891413dd79ebb1c"
+    },
+    {
+      "package": "mingw-w64-ucrt-x86_64-gcc-libgfortran-16.2.0-3",
+      "filename": "mingw-w64-ucrt-x86_64-gcc-libgfortran-16.2.0-3-any.pkg.tar.zst",
+      "url": "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-gcc-libgfortran-16.2.0-3-any.pkg.tar.zst",
+      "size_bytes": 960628,
+      "sha256": "d4780f5a3d836cc68b7f99ce632bfaec1a15b79abc71dabfabeb3beb73eb778f",
+      "signature_url": "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-gcc-libgfortran-16.2.0-3-any.pkg.tar.zst.sig",
+      "signature_sha256": "c5da2689dcf1db70bcf14789ec2651a62419d413dea3b31bd57a525b0c0d3d85"
+    },
+    {
+      "package": "mingw-w64-ucrt-x86_64-gcc-libs-16.2.0-3",
+      "filename": "mingw-w64-ucrt-x86_64-gcc-libs-16.2.0-3-any.pkg.tar.zst",
+      "url": "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-gcc-libs-16.2.0-3-any.pkg.tar.zst",
+      "size_bytes": 1147919,
+      "sha256": "5763fabf86fa13a4449ee765006d3446384ed66af7bf827459710eb777e0b11c",
+      "signature_url": "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-gcc-libs-16.2.0-3-any.pkg.tar.zst.sig",
+      "signature_sha256": "1126ddc1848e2b6b878abd1902fcb6bb01e2b869d475e30ba0bb78c96be49392"
+    },
+    {
+      "package": "mingw-w64-ucrt-x86_64-msmpi-10.1.1-19",
+      "filename": "mingw-w64-ucrt-x86_64-msmpi-10.1.1-19-any.pkg.tar.zst",
+      "url": "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-msmpi-10.1.1-19-any.pkg.tar.zst",
+      "size_bytes": 193395,
+      "sha256": "f2c8b865f7fe4ad69848ff95f60b25b63f2a04847a6eed0045274007e06d9c62",
+      "signature_url": "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-msmpi-10.1.1-19-any.pkg.tar.zst.sig",
+      "signature_sha256": "e2296896f0fb01711fda003c843b1a0509af61d5374c24c6a18341c2be055bc4"
+    },
+    {
+      "package": "mingw-w64-ucrt-x86_64-ninja-1.13.2-1",
+      "filename": "mingw-w64-ucrt-x86_64-ninja-1.13.2-1-any.pkg.tar.zst",
+      "url": "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-ninja-1.13.2-1-any.pkg.tar.zst",
+      "size_bytes": 190474,
+      "sha256": "514685563a84a6ebddbbeee7bbafae5f3994e363c49364fc4507fabcaa049f2b",
+      "signature_url": "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-ninja-1.13.2-1-any.pkg.tar.zst.sig",
+      "signature_sha256": "9f3d4a41aa2d51569cdebb38561aa80976d72434f79d4872b86f5ad95cc4dace"
+    },
+    {
+      "package": "msys2-runtime-3.6.10-3",
+      "filename": "msys2-runtime-3.6.10-3-x86_64.pkg.tar.zst",
+      "url": "https://repo.msys2.org/msys/x86_64/msys2-runtime-3.6.10-3-x86_64.pkg.tar.zst",
+      "size_bytes": 2064942,
+      "sha256": "4dfcff2f7bde98f30dbd5d3773320e2ce2b06d9175a53fee6a18621637e3f3d1",
+      "signature_url": "https://repo.msys2.org/msys/x86_64/msys2-runtime-3.6.10-3-x86_64.pkg.tar.zst.sig",
+      "signature_sha256": "c66d5755ea88cc98ecfce0de66c56bad5b50f820f353307a7f157ac508c39f67"
+    },
+    {
+      "package": "msys2-runtime-devel-3.6.10-3",
+      "filename": "msys2-runtime-devel-3.6.10-3-x86_64.pkg.tar.zst",
+      "url": "https://repo.msys2.org/msys/x86_64/msys2-runtime-devel-3.6.10-3-x86_64.pkg.tar.zst",
+      "size_bytes": 5901132,
+      "sha256": "c49d315897978030bca84ef8d3a4876d0fe64b1e13ef5980d73345c0465fd1cc",
+      "signature_url": "https://repo.msys2.org/msys/x86_64/msys2-runtime-devel-3.6.10-3-x86_64.pkg.tar.zst.sig",
+      "signature_sha256": "e7e0e1c8c123c97b0ea428ec3dd26012a1e022cbd0fac9cc58437fca1b6349e5"
+    },
+    {
+      "package": "unzip-6.0-3",
+      "filename": "unzip-6.0-3-x86_64.pkg.tar.zst",
+      "url": "https://repo.msys2.org/msys/x86_64/unzip-6.0-3-x86_64.pkg.tar.zst",
+      "size_bytes": 98517,
+      "sha256": "c98ebac31ea92a63cf61c6190ed3e8284ccc0c29c43973f1b2c0de2874e5acfe",
+      "signature_url": "https://repo.msys2.org/msys/x86_64/unzip-6.0-3-x86_64.pkg.tar.zst.sig",
+      "signature_sha256": "d1cfddcfb59ca4adf645f1b6c7b03c1aa9a8376da2a68ff3363d281a86c8eebe"
+    },
+    {
+      "package": "zip-3.0-5",
+      "filename": "zip-3.0-5-x86_64.pkg.tar.zst",
+      "url": "https://repo.msys2.org/msys/x86_64/zip-3.0-5-x86_64.pkg.tar.zst",
+      "size_bytes": 154259,
+      "sha256": "874e20bf625fbe577949444faf30ab9a725dbd4886ec9bff26459152da7f831c",
+      "signature_url": "https://repo.msys2.org/msys/x86_64/zip-3.0-5-x86_64.pkg.tar.zst.sig",
+      "signature_sha256": "c0a46ee1188021da50de083e3777445e7abb0a063125b78966f6ab9f2a8a4630"
+    },
+    {
+      "package": "mingw-w64-ucrt-x86_64-binutils-2.47-3",
+      "filename": "mingw-w64-ucrt-x86_64-binutils-2.47-3-any.pkg.tar.zst",
+      "url": "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-binutils-2.47-3-any.pkg.tar.zst",
+      "size_bytes": 6639046,
+      "sha256": "ba98af202fe71e0884bb51daf78ce10bd8a51c69528c700dcf5855e6ece06dd3",
+      "signature_url": "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-binutils-2.47-3-any.pkg.tar.zst.sig",
+      "signature_sha256": "cbf255869ea862b3a3de61a83916abf2a92a2c61520ea09f94eb3b13ae8e5bdf"
+    },
+    {
+      "package": "mingw-w64-ucrt-x86_64-tools-14.0.0.r283.ga7cb47123-1",
+      "filename": "mingw-w64-ucrt-x86_64-tools-14.0.0.r283.ga7cb47123-1-any.pkg.tar.zst",
+      "url": "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-tools-14.0.0.r283.ga7cb47123-1-any.pkg.tar.zst",
+      "size_bytes": 353809,
+      "sha256": "220c41f9ec32ed22c6c8107b5cfb45918c6681e7c8d803865325d04152536200",
+      "signature_url": "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-tools-14.0.0.r283.ga7cb47123-1-any.pkg.tar.zst.sig",
+      "signature_sha256": "a1fdd28422651e6209d05bdd7b6641b4aa4e26c3ebb2232179261e910dc84db8"
+    }
+  ]
+}

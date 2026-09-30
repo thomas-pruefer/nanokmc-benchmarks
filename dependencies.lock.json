@@ -1,0 +1,178 @@
+{
+  "schema_version": 2,
+  "sources": {
+    "nanokmc": {
+      "url": "https://github.com/thomas-pruefer/NanoKMC.git",
+      "commit": "68764aa44c4d73a7d95f3094d031254d0f43e50d",
+      "tag": "v0.1.0",
+      "tree_sha256": "6c496a60652627ba9a1242ee9c905376f5fe59889f815abe72748325c006ee71"
+    },
+    "spparks": {
+      "url": "https://github.com/spparks/spparks.git",
+      "commit": "fb933dd6d76600c8f0edb9a61449e1c538585134",
+      "tag": "08Oct25",
+      "tree_sha256": "d11bed8d0bff629c45fb4276d8a38f49ef568505919d9efadaab250621171447"
+    },
+    "kmc_lattice": {
+      "url": "https://github.com/MikeHeiber/KMC_Lattice.git",
+      "commit": "4bc153e28eed6d3b0d3e5106998070d064968452",
+      "tag": "v2.1.0",
+      "tree_sha256": "828675d4c673944434bd9cd96eb4b2bc6589d43f8d2504bb77bb202052e82624"
+    },
+    "kmcos": {
+      "url": "https://github.com/kmcos/kmcos.git",
+      "commit": "4442009d73032cbe39f8201370ad6d8927c7be4c",
+      "tag": null,
+      "tree_sha256": "e3cf06078a756e212c630299860afb3b56cfa93cd055c0b75255e9422eed9501"
+    }
+  },
+  "environments": {
+    "benchmark": {
+      "python": "3.14.4",
+      "implementation": "CPython",
+      "architecture": "AMD64",
+      "packages": {
+        "numpy": "2.4.4",
+        "pandas": "3.0.2",
+        "matplotlib": "3.10.9",
+        "python-dateutil": "2.9.0.post0",
+        "six": "1.17.0",
+        "tzdata": "2026.2",
+        "contourpy": "1.3.3",
+        "cycler": "0.12.1",
+        "fonttools": "4.62.1",
+        "kiwisolver": "1.5.0",
+        "packaging": "26.2",
+        "pillow": "12.2.0",
+        "pyparsing": "3.3.2"
+      }
+    },
+    "kmcos": {
+      "python": "3.10.11",
+      "architecture": "AMD64",
+      "packages": {
+        "ase": "3.29.0",
+        "contourpy": "1.3.2",
+        "cycler": "0.12.1",
+        "fonttools": "4.63.0",
+        "kiwisolver": "1.5.0",
+        "lxml": "6.1.2",
+        "matplotlib": "3.10.9",
+        "numpy": "1.26.4",
+        "packaging": "26.3",
+        "pillow": "12.3.0",
+        "pip": "26.2.1",
+        "pyparsing": "3.3.2",
+        "python-dateutil": "2.9.0.post0",
+        "scipy": "1.15.3",
+        "setuptools": "65.5.0",
+        "six": "1.17.0",
+        "typing_extensions": "4.16.0"
+      }
+    }
+  },
+  "toolchains": {
+    "ucrt64_cpp": {
+      "version": "16.2.0",
+      "revision": "MSYS2 Rev3",
+      "executable_relative_to_msys2_root": "ucrt64/bin/g++.exe"
+    },
+    "ucrt64_fortran": {
+      "version": "16.2.0",
+      "revision": "MSYS2 Rev3",
+      "executable_relative_to_msys2_root": "ucrt64/bin/gfortran.exe"
+    },
+    "ucrt64_python_import_library": {
+      "purpose": "Windows CPython 3.10 MinGW/F2PY import-library generation",
+      "tools_relative_to_msys2_root": {
+        "gendef": "ucrt64/bin/gendef.exe",
+        "dlltool": "ucrt64/bin/dlltool.exe"
+      },
+      "packages": {
+        "gendef": "14.0.0.r283.ga7cb47123-1",
+        "dlltool": "2.47-3"
+      }
+    },
+    "plain_msys_cpp": {
+      "version": "15.3.0",
+      "executable_relative_to_msys2_root": "usr/bin/g++.exe"
+    },
+    "cmake": "4.4.2",
+    "ninja": "1.13.2",
+    "pacman_packages_current": [
+      "gcc-15.3.0-1",
+      "gcc-libs-15.3.0-1",
+      "make-4.4.1-3",
+      "mingw-w64-ucrt-x86_64-cmake-4.4.2-2",
+      "mingw-w64-ucrt-x86_64-gcc-16.2.0-3",
+      "mingw-w64-ucrt-x86_64-gcc-fortran-16.2.0-3",
+      "mingw-w64-ucrt-x86_64-gcc-libgfortran-16.2.0-3",
+      "mingw-w64-ucrt-x86_64-gcc-libs-16.2.0-3",
+      "mingw-w64-ucrt-x86_64-msmpi-10.1.1-19",
+      "mingw-w64-ucrt-x86_64-ninja-1.13.2-1",
+      "mingw-w64-ucrt-x86_64-binutils-2.47-3",
+      "mingw-w64-ucrt-x86_64-tools-14.0.0.r283.ga7cb47123-1",
+      "msys2-runtime-3.6.10-3",
+      "msys2-runtime-devel-3.6.10-3",
+      "unzip-6.0-3",
+      "zip-3.0-5"
+    ],
+    "package_archive_manifest": "config/msys2-packages.lock.json"
+  },
+  "build_contract": {
+    "nanokmc": {
+      "compiler": "ucrt64_cpp",
+      "paper_build": true,
+      "compile_flags": [
+        "-std=c++17",
+        "-O1",
+        "-DNDEBUG"
+      ],
+      "source_changes_allowed": false
+    },
+    "spparks": {
+      "compiler": "plain_msys_cpp",
+      "compile_flags": [
+        "-O1",
+        "-std=gnu++17"
+      ],
+      "link_flags": [
+        "-O1"
+      ],
+      "serial": true,
+      "source_changes_allowed": false
+    },
+    "kmc_lattice": {
+      "compiler": "ucrt64_cpp",
+      "compile_flags": [
+        "-O1",
+        "-std=gnu++17",
+        "-Wall",
+        "-Wextra"
+      ],
+      "source_changes_allowed": false
+    },
+    "kmcos": {
+      "compiler": "ucrt64_fortran",
+      "backend": "otf",
+      "f2py_compiler_family": "gnu95",
+      "f2py_c_compiler": "mingw32",
+      "fortran_flags": [
+        "-ffree-line-length-none",
+        "-ffree-form",
+        "-xf95-cpp-input",
+        "-Wall",
+        "-O3",
+        "-fmax-identifier-length=63"
+      ],
+      "source_changes_allowed": false,
+      "python_hash_seed": "0"
+    }
+  },
+  "model_sha256": {
+    "models/kmc_lattice/fcc_kawasaki_selective.cpp": "6954d6f056e75d1749ae58d499db82b6712acaafca03c864ee00be913479eb48",
+    "models/kmcos/fcc_kawasaki_geometry.py": "99a26df8ba1506a972e2edab13f03939ebca4206d180de8bf0b81f2a9e58c883",
+    "models/kmcos/fcc_kawasaki_otf__build.py": "3e464ed105133303ee07a0e3d1cb23a0611b32fff32be5efef2a556da1df438c",
+    "models/kmcos/run_kmcos_otf_scenario.py": "e27eb4cf2cb445c05b3fdfa1f53af84d988974d8ba5ed2ed34f10e23ab7f7603"
+  }
+}
