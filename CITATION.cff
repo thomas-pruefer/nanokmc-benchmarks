@@ -1,11 +1,11 @@
 cff-version: 1.2.0
 type: software
 title: nanokmc-benchmarks
+license: MIT
 message: >-
-  Cite this benchmark repository with the exact Git revision used, and cite the
-  NanoKMC software release below. Cite the accompanying manuscript using its
-  eventual published record when available. No benchmark release DOI or journal
-  DOI has been assigned in the supplied citation record.
+  Cite nanokmc-benchmarks with the exact Git revision used. Cite the NanoKMC
+  software release and accompanying manuscript separately using the references
+  below. Use the manuscript's published citation when available.
 authors:
   - family-names: Prüfer
     given-names: Thomas
@@ -28,6 +28,7 @@ references:
       - family-names: Prüfer
         given-names: Thomas
     version: 0.1.0
+    commit: 68764aa44c4d73a7d95f3094d031254d0f43e50d
     date-released: "2026-09-23"
     doi: 10.5281/zenodo.22916915
     repository-code: https://github.com/thomas-pruefer/NanoKMC
@@ -40,5 +41,4 @@ references:
       - family-names: Manjunath
         given-names: Pavan
     notes: >-
-      Accompanying manuscript. Publication status and journal DOI have not been
-      established in the supplied manuscript record.
+      Accompanying manuscript; journal citation and DOI are not specified.

@@ -42,7 +42,7 @@ def main():
     except subprocess.CalledProcessError as exc:
         return exc.returncode
     except KeyboardInterrupt:
-        print("Interrupted. Use stage 4 --resume; incomplete trajectories restart from their original seed.", file=sys.stderr)
+        print("Interrupted. Use scripts/windows/run_campaigns.bat --resume; incomplete trajectories restart from their original seed.", file=sys.stderr)
         return 130
     return 0
 

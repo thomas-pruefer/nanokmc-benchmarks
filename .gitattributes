@@ -1,3 +1,13 @@
-# Reproducibility checks use exact source bytes, including line endings.
-# Preserve committed bytes across Windows and other Git checkout settings.
-* -text
+# Stable source bytes on every supported checkout, independent of autocrlf.
+* text=auto
+*.py text eol=lf
+*.cpp text eol=lf
+*.h text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.cff text eol=lf
+*.txt text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf
+LICENSE text eol=lf
+*.bat text eol=crlf

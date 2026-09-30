@@ -33,7 +33,7 @@ def file_record(path: Path) -> dict:
 def build(paths=None) -> dict:
     config = load_paths(paths)
     # Builds consume the already exported, hash-locked source tree. Git is only
-    # needed by stage 2 when acquiring/exporting absent sources, never here.
+    # needed when acquiring/exporting absent sources, never during a build.
     source = verify_frozen_export("kmcos")
     for name in ("fcc_kawasaki_geometry.py", "fcc_kawasaki_otf__build.py", "run_kmcos_otf_scenario.py"):
         relative = "models/kmcos/" + name

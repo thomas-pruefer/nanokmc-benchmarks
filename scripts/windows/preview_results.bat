@@ -1,6 +1,6 @@
 @echo off
 setlocal
-pushd "%~dp0" || exit /b 2
+pushd "%~dp0..\.." || exit /b 2
 if not defined BENCHMARK_PYTHON if exist "config\python.local.bat" call "config\python.local.bat"
 if not defined BENCHMARK_PYTHON if exist ".venv\Scripts\python.exe" set "BENCHMARK_PYTHON=%CD%\.venv\Scripts\python.exe"
 if not defined BENCHMARK_PYTHON (
@@ -10,7 +10,7 @@ if not defined BENCHMARK_PYTHON (
 )
 set "PYTHONDONTWRITEBYTECODE=1"
 set "PYTHONUTF8=1"
-"%BENCHMARK_PYTHON%" -B "scripts\reproduce_manuscript.py" %*
+"%BENCHMARK_PYTHON%" -B "scripts\preview_partial_results.py" %*
 set "BENCHMARK_EXIT_CODE=%ERRORLEVEL%"
 popd
 exit /b %BENCHMARK_EXIT_CODE%

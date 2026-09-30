@@ -131,7 +131,7 @@ def load_inputs(root, csv_dir, figures, *, allow_test_only=False,run_set=None):
     figures = sorted(set(figures))
     manifest_path = csv_dir / "publication_manifest.json"
     if not manifest_path.is_file():
-        raise PublicationError(f"Missing {manifest_path}. Run 05_process_results.bat after required runs finish.")
+        raise PublicationError(f"Missing {manifest_path}. Run scripts/windows/process_results.bat after required runs finish.")
     original_hash = sha256(manifest_path)
     implementation_guards = {str(Path(__file__).resolve()): sha256(Path(__file__))}
     manifest = json.loads(manifest_path.read_text(encoding="utf-8-sig"))

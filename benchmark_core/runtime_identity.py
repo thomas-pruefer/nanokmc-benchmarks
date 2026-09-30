@@ -26,7 +26,7 @@ def current_runtime_identity(paths_file: Path) -> dict:
     if not environment["environment_verified"]:
         raise RuntimeError("Environment verification failed: " + "; ".join(environment["errors"]))
     # Verification/status must not rewrite reports while a campaign is active.
-    # Stages 01 and 03 explicitly produce their environment/build reports.
+    # Environment and build commands explicitly produce their reports.
     manifest = aggregate(paths_file, write_manifest=False)
     paths = load_paths(paths_file)
     for code in PATH_IDS:

@@ -17,9 +17,10 @@ route generated files under `build/kmcos/`.
 The dedicated runtime uses CPython **3.10.11** (AMD64), NumPy **1.26.4**,
 setuptools **65.5.0**, ASE **3.29.0**, lxml **6.1.2**, SciPy **1.15.3**,
 Matplotlib **3.10.9**, and UCRT64 GCC/GFortran **16.2.0**. Complete Python package
-pins are in `dependencies.lock.json` and `requirements-kmcos.lock.txt`. The modern
-analysis harness uses a separate environment. These requirements describe the
-reconstructed build, not a recovered historical per-run Python dependency chain.
+pins are in `dependencies.lock.json` and `requirements-kmcos.lock.txt`. The
+analysis harness uses a separate environment. These requirements define the
+current build; the manuscript's complete per-run Python dependency chain is
+unavailable.
 
 The unchanged f2py compiler-family arguments are
 `--fcompiler=gnu95 --compiler=mingw32`. Explicit Fortran flags are:

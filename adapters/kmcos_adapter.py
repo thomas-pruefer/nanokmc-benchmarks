@@ -77,7 +77,7 @@ class KmcosOTFAdapter(CodeAdapter):
         if missing:
             raise FileNotFoundError(
                 "kmcos OTF runtime is not ready:\n  - " + "\n  - ".join(missing)
-                + "\nRun 03_build_all.bat first."
+                + "\nRun scripts/windows/build_all.bat first."
             )
 
     def prepare(self, scenario: BenchmarkScenario, seed: int, run_dir: Path) -> None:

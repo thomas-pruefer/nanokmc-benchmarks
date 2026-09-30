@@ -173,7 +173,7 @@ def sha256(data):
 
 def git(repo, *args):
     if shutil.which("git") is None:
-        raise RuntimeError("Git is required to acquire/export absent sources. Install Git for Windows and add git.exe to PATH, then retry stage 2. Already verified frozen exports do not require Git.")
+        raise RuntimeError("Git is required to acquire/export absent sources. Install Git for Windows and add git.exe to PATH, then retry scripts/windows/fetch_or_verify_sources.bat. Already verified frozen exports do not require Git.")
     return subprocess.check_output(["git", "--no-optional-locks", "-c", f"safe.directory={repo.as_posix()}", "-C", str(repo), *args], stderr=subprocess.PIPE)
 
 
@@ -317,7 +317,7 @@ def verify_sources(paths=None, verify_only=False, fetch=False, *, write_reports=
             if repo.exists():
                 raise RuntimeError(f"Incomplete private source cache exists: {repo}. Inspect it before retrying.")
             if shutil.which("git") is None:
-                raise RuntimeError("Git is required for --fetch. Install Git for Windows and add git.exe to PATH, then retry stage 2.")
+                raise RuntimeError("Git is required for --fetch. Install Git for Windows and add git.exe to PATH, then retry scripts/windows/fetch_or_verify_sources.bat.")
             repo.parent.mkdir(parents=True, exist_ok=True)
             subprocess.run(["git", "clone", "--no-checkout", pin["url"], str(repo)], check=True)
             network_used = True

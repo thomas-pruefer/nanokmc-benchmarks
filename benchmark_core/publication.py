@@ -219,11 +219,11 @@ def implementation_guards(root,identities):
 
 def verify_implementation_guards(root,guards):
     if not guards:
-        raise ValueError("Source/build/harness guards missing; rerun stage 5")
+        raise ValueError("Source/build/harness guards missing; rerun scripts/windows/process_results.bat")
     for guard in guards:
         path = safe_path(root,guard["path"]) if guard["repository_relative"] else Path(guard["path"])
         if sha256(path) != guard["sha256"]:
-            raise ValueError(f"Build/runtime/model/scientific harness changed: {guard['path']}; rerun stage 5")
+            raise ValueError(f"Build/runtime/model/scientific harness changed: {guard['path']}; rerun scripts/windows/process_results.bat")
 
 def process_publication(root,figures,paths_file,*,validate_only=False,source_root=None,run_set=None):
     from benchmark_core.run_store import verified_completed,current_identities,CampaignLock
@@ -352,18 +352,18 @@ def load_publication(root,figures=None,manifest_path=None,*,allow_test_only=Fals
     if run_set is not None and report.get("run_set") != run_set:
         raise ValueError("Publication manifest belongs to another run-set")
     if report.get("schema_version") != 1 or not report.get("publication_complete") or report.get("scope") != "manuscript":
-        raise ValueError("Not a complete manuscript publication manifest; run stage 5")
+        raise ValueError("Not a complete manuscript publication manifest; run scripts/windows/process_results.bat")
     if report.get("test_only") and not allow_test_only:
         raise ValueError("Synthetic test data cannot be used as manuscript results")
     if figures is not None and not set(figures).issubset(report["selected_figures"]):
-        raise ValueError("Figure coverage is absent; rerun stage 5 with these --figures")
+        raise ValueError("Figure coverage is absent; rerun scripts/windows/process_results.bat with these --figures")
     paths = set()
     for entry in report["files"]:
         if entry["path"] in paths:
             raise ValueError("Duplicate file in publication manifest")
         paths.add(entry["path"])
         if sha256(safe_path(root,entry["path"])) != entry["sha256"]:
-            raise ValueError(f"Changed file or interrupted processing: {entry['path']}; rerun stage 5")
+            raise ValueError(f"Changed file or interrupted processing: {entry['path']}; rerun scripts/windows/process_results.bat")
     for figure in figures or report["selected_figures"]:
         for name in FIGURE_FILES[figure]:
             if f"results/csv/{name}" not in paths:
@@ -372,16 +372,16 @@ def load_publication(root,figures=None,manifest_path=None,*,allow_test_only=Fals
         jobs = report.get("requested_jobs")
         if (type(jobs) is not int or not 1 <= jobs <= 32 or report.get("concurrency") != jobs
                 or report.get("execution_policy") != "independent_single_thread_jobs" or not report.get("timing_policy")):
-            raise ValueError("Publication concurrency/timing policy is missing or invalid; rerun stage 5")
+            raise ValueError("Publication concurrency/timing policy is missing or invalid; rerun scripts/windows/process_results.bat")
         if any(run.get("requested_jobs") != jobs or run.get("run_set") != report.get("run_set") for run in report["runs"]):
             raise ValueError("Publication manifest contains mixed requested job limits")
         if run_set is not None:
             from benchmark_core.run_sets import check_run_set
             check_run_set(source_root,run_set,jobs)
         if report.get("processor_sha256") != sha256(Path(__file__)) or report.get("manuscript_manifest_sha256") != sha256(source_root/"config/manuscript.json"):
-            raise ValueError("Processing implementation or campaign manifest changed; rerun stage 5")
+            raise ValueError("Processing implementation or campaign manifest changed; rerun scripts/windows/process_results.bat")
         verify_implementation_guards(source_root,report.get("implementation_guards"))
         for run in report["runs"]:
             if sha256(safe_path(root,run["completion_path"])) != run["completion_sha256"]:
-                raise ValueError(f"Run completion changed: {run['run_id']}; rerun stage 5")
+                raise ValueError(f"Run completion changed: {run['run_id']}; rerun scripts/windows/process_results.bat")
     return report

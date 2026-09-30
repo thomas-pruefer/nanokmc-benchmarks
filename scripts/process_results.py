@@ -36,7 +36,7 @@ def main(argv=None) -> int:
         report = process_publication(dataset, args.figures, args.paths, validate_only=args.validate_only,
                                      source_root=ROOT,run_set=args.run_set)
     except (ValueError, OSError, RuntimeError) as exc:
-        print(f"PROCESSING FAILED: {exc}\nUse stage 4 --status to inspect missing/stale runs. No incomplete publication accepted.", file=sys.stderr)
+        print(f"PROCESSING FAILED: {exc}\nUse scripts/windows/run_campaigns.bat --status to inspect missing/stale runs. No incomplete publication accepted.", file=sys.stderr)
         return 1
     print(f"PASS: {report['run_count']} runs, {report['checkpoint_count']} observations, requested jobs={report['requested_jobs']}.")
     if not args.validate_only:

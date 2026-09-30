@@ -2,27 +2,30 @@
 
 This guide takes a fresh clone from dependency installation to the numerical Figures 5–10. Commands run in a normal **Windows PowerShell** from the repository root. The exact model, observations, counters and fits are specified in [MANUSCRIPT_REPRODUCTION_MAP.md](MANUSCRIPT_REPRODUCTION_MAP.md).
 
-The setup, build, dry-run and optional initialization checks are separate from the expensive manuscript calculations. Sections 8–11 contain commands that start real trajectories. Choose the dataset and execution policy before starting them.
+The setup, build, dry-run and optional initialization checks are separate from the expensive manuscript calculations. Sections 9–12 and 19 contain commands that start real trajectories. Choose the dataset and execution policy before starting them.
 
-**Release qualifications:** the benchmark-owned licensing decision is unresolved; see [LICENSING.md](LICENSING.md). The exact acquisition routes and remaining installation qualifications are in [TOOLCHAINS.md](docs/TOOLCHAINS.md). A complete end-to-end validation from a fresh source-only clone is still required. Pinned versions and earlier build evidence are not a claim that this new installation has already reproduced the manuscript.
+Exact toolchain acquisition and dependency-closure limits are described in [TOOLCHAINS.md](docs/TOOLCHAINS.md). Build and initialization checks establish that an installation can run the model; scientific reproduction requires the prescribed calculations and analysis. Benchmark-owned code uses the [MIT license](LICENSE); [LICENSING.md](LICENSING.md) distinguishes separately licensed dependencies and generated/linked products.
 
 ## 1. Prerequisites and a short clone location
 
 Use Windows 11 AMD64, a normal PowerShell terminal, Git, and sufficient free storage for native snapshots and the 6468-run campaign. No reliable universal disk-space or elapsed-time estimate is established. Keep the computer awake during calculations and monitor storage.
 
-Use the repository URL supplied with the actual release; this guide does not invent a publication URL. After cloning, enter its directory:
+Copy the Git clone URL from the repository page. Choose a short destination and clone it from PowerShell:
 
 ```powershell
-$Repository = Read-Host 'Full path to your cloned nanokmc-benchmarks directory'
+$RepositoryUrl = Read-Host 'Git clone URL from the repository page'
+$Repository = 'C:\kmc\nanokmc-benchmarks'
+git clone -- $RepositoryUrl $Repository
+if ($LASTEXITCODE -ne 0) { throw 'Clone failed.' }
 Set-Location -LiteralPath $Repository
 Get-Location
 ```
 
 Choose a short, local path, for example `C:\kmc\nanokmc-benchmarks`. Some native exporters still have Windows path-length limits even when Windows long-path support is enabled. The harness uses compact run/attempt directory names and checks projected native output paths before launch. Avoid deeply nested or synchronized folders. Do not move a dataset while its processes are running.
 
-The repository's `.gitattributes` preserves exact committed line endings. Source
-identity checks hash bytes, so do not bulk-convert model files or apply an editor's
-automatic line-ending normalization before source verification and compilation.
+The repository's `.gitattributes` defines stable source line endings and Windows
+batch-script line endings. Model identity checks hash bytes, so use the clone as
+checked out; do not bulk-convert model files before verification and compilation.
 
 Read [TOOLCHAINS.md](docs/TOOLCHAINS.md) before installing these exact environments:
 
@@ -35,7 +38,7 @@ Read [TOOLCHAINS.md](docs/TOOLCHAINS.md) before installing these exact environme
 | SPPARKS serial C++ | Plain-MSYS GNU 15.3.0 |
 | Build utilities | CMake 4.4.2, Ninja 1.13.2, GNU Make 4.4.1, Bash, zip/unzip and the declared MS-MPI headers |
 
-MSYS2 is a rolling distribution. Installing its latest packages does not establish these exact versions. Follow the archive/package instructions in the toolchain document, then let stage 1 verify the installed tools. Do not replace a missing compiler with another version or change solver source to make it compile.
+MSYS2 is a rolling distribution. Installing its latest packages does not establish these exact versions. Follow the archive/package instructions in the toolchain document, then run the environment check to verify the installed tools. Do not replace a missing compiler with another version or change solver source to make it compile.
 
 The reference machine was Windows 11 Pro on an Intel Core i9-9900K. Another AMD64 computer can execute the workflow, but its timings are a separate measurement. Each solver instance is single-process/single-thread; the manuscript policy allows up to eight independent jobs at once.
 
@@ -77,7 +80,7 @@ if (-not (Test-Path -LiteralPath '.\config\paths.local.json')) {
 notepad .\config\paths.local.json
 ```
 
-Set `msys2_root` and `msys2_bash` to the installation containing the exact tools. The example's `C:/msys64` is a conventional installation location, not a requirement. JSON paths may use forward slashes. The standard Python paths are `.venv/Scripts/python.exe` and `.venv-kmcos/Scripts/python.exe`.
+Set `msys2_root` and `msys2_bash` to the installation containing the exact tools. The example's `C:/msys64` is a conventional installation location, not a requirement. JSON paths may use forward slashes. The launchers use `.venv/Scripts/python.exe`; set `kmcos_python` to `.venv-kmcos/Scripts/python.exe` in the local configuration.
 
 Keep source and build paths at their repository-relative defaults unless you have a specific reason to change them. `source_repositories` may map the four dependency names to existing local Git repositories for offline acquisition. The mapping keys are `nanokmc`, `spparks`, `kmcos` and `kmc_lattice`; each value is the local repository path containing its exact commit. Local configuration is ignored by Git.
 
@@ -86,11 +89,11 @@ All stages accept `--paths` where they require tool configuration. The commands 
 ## 4. Verify the environment
 
 ```powershell
-.\01_check_environment.bat
+.\scripts\windows\check_environment.bat
 if ($LASTEXITCODE -ne 0) { throw 'Environment verification failed; inspect logs/environment_check.json.' }
 ```
 
-Stage 1 probes actual interpreter and package versions, compilers and required runtime components. For kmcos it also checks the base CPython `python310.dll`, UCRT64 `gcc`, `gendef` and `dlltool`, including the declared MSYS2 package versions. Read the generated report and correct every reported error before building. An installed executable with a plausible filename is not sufficient evidence of the required version.
+The environment check probes actual interpreter and package versions, compilers and required runtime components. For kmcos it also checks the base CPython `python310.dll`, UCRT64 `gcc`, `gendef` and `dlltool`, including the declared MSYS2 package versions. Read the generated report and correct every reported error before building. An installed executable with a plausible filename is not sufficient evidence of the required version.
 
 Do not substitute the dedicated kmcos Python for the main harness Python. The recorded environment is a declared reproduction environment; the complete historical analysis-package chain is not established.
 
@@ -99,7 +102,7 @@ Do not substitute the dedicated kmcos Python for the main harness Python. The re
 The first command explicitly permits network acquisition from the upstream URLs recorded in `dependencies.lock.json`:
 
 ```powershell
-.\02_fetch_or_verify_sources.bat --fetch
+.\scripts\windows\fetch_or_verify_sources.bat --fetch
 if ($LASTEXITCODE -ne 0) { throw 'Frozen source acquisition or verification failed.' }
 ```
 
@@ -115,16 +118,16 @@ The required revisions are:
 The script extracts verified scientific source trees into ignored `sources/` and records file hashes. It does not accept a branch name or a similar-looking source folder as a revision lock. To check already extracted trees without acquiring them:
 
 ```powershell
-.\02_fetch_or_verify_sources.bat --verify-only
+.\scripts\windows\fetch_or_verify_sources.bat --verify-only
 if ($LASTEXITCODE -ne 0) { throw 'Source verification failed.' }
 ```
 
-For offline use, first configure local repositories containing the exact objects, then run stage 2 without `--fetch`. Source verification records are under `logs/source_verification.json` and `build/source-manifests/`. Do not edit extracted scientific source. Correct a build environment problem rather than patching the upstream solver.
+For offline use, first configure local repositories containing the exact objects, then run `scripts/windows/fetch_or_verify_sources.bat` without `--fetch`. Source verification records are under `logs/source_verification.json` and `build/source-manifests/`. Do not edit extracted scientific source. Correct a build environment problem rather than patching the upstream solver.
 
 ## 6. Compile every solver
 
 ```powershell
-.\03_build_all.bat --jobs 4
+.\scripts\windows\build_all.bat --jobs 4
 if ($LASTEXITCODE -ne 0) { throw 'Compilation failed; inspect build and logs before continuing.' }
 ```
 
@@ -137,7 +140,7 @@ NanoKMC uses its paper-build route with `-O1 -DNDEBUG`; SPPARKS and KMC_Lattice 
 After a successful build, checking existing artifacts without recompiling is possible:
 
 ```powershell
-.\03_build_all.bat --collect-existing
+.\scripts\windows\build_all.bat --collect-existing
 if ($LASTEXITCODE -ne 0) { throw 'Existing build artifacts do not satisfy the declared build identity.' }
 ```
 
@@ -150,7 +153,7 @@ A smoke check is a genuinely small native calculation: k=3, N=256, seed 1, x_A=0
 To verify the existing builds and smoke-test all eleven paths:
 
 ```powershell
-.\03_build_all.bat --collect-existing --smoke
+.\scripts\windows\build_all.bat --collect-existing --smoke
 if ($LASTEXITCODE -ne 0) { throw 'Build verification or initialization smoke test failed.' }
 ```
 
@@ -181,8 +184,8 @@ All campaign, processing and plotting commands require `--run-set NAME`, except 
 List the eleven paths and preview the full union:
 
 ```powershell
-.\04_run_manuscript_campaigns.bat --list-solvers
-.\04_run_manuscript_campaigns.bat --run-set manuscript-jobs8 --campaign all --jobs 8 --dry-run
+.\scripts\windows\run_campaigns.bat --list-solvers
+.\scripts\windows\run_campaigns.bat --run-set manuscript-jobs8 --campaign all --jobs 8 --dry-run
 if ($LASTEXITCODE -ne 0) { throw 'Campaign selection is invalid.' }
 ```
 
@@ -197,43 +200,43 @@ A dry run enumerates selections without launching solvers, processing results or
 The command below starts eleven full trajectories, each at k=6, N=131072, x_A=0.20, T*=0.75 and seed 1. These are real manuscript calculations, not initialization checks.
 
 ```powershell
-.\04_run_manuscript_campaigns.bat --run-set manuscript-jobs8 --campaign A --jobs 8 --resume
+.\scripts\windows\run_campaigns.bat --run-set manuscript-jobs8 --campaign A --jobs 8 --resume
 if ($LASTEXITCODE -ne 0) { throw 'Campaign A stopped; inspect its status and resume after correcting the cause.' }
 ```
 
 Once all eleven are complete, Figures 5, 7 and 8 can be processed and generated without waiting for B or C:
 
 ```powershell
-.\05_process_results.bat --run-set manuscript-jobs8 --figures 5 7 8
+.\scripts\windows\process_results.bat --run-set manuscript-jobs8 --figures 5 7 8
 if ($LASTEXITCODE -ne 0) { throw 'Campaign A processing failed.' }
-.\06_make_figures.bat --run-set manuscript-jobs8 --figures 5 7 8
+.\scripts\windows\make_figures.bat --run-set manuscript-jobs8 --figures 5 7 8
 if ($LASTEXITCODE -ne 0) { throw 'Campaign A figure generation failed.' }
 ```
 
 To inspect progress visually before all eleven finish, use the separate **provisional preview** command. It reads only complete, current, scientifically validated trajectories and may be run while the campaign is still running:
 
 ```powershell
-.\07_preview_partial_results.bat --run-set manuscript-jobs8 --figures 5 7 8
+.\scripts\windows\preview_results.bat --run-set manuscript-jobs8 --figures 5 7 8
 if ($LASTEXITCODE -ne 0) { throw 'Partial preview failed; inspect its reported coverage.' }
 ```
 
-The preview writes time-stamped PNG files and a coverage/provenance manifest under `run-sets/manuscript-jobs8/figures/previews/`. Select any of `--figures 5 6 7 8 9 10`; use `--format pdf` or `--format both` if useful, and `--dry-run` for coverage without files. A missing solver or state is omitted visibly, and a Figure 6 comparison appears only when its Binary reference and comparator are both complete. Figure 10 means use the completed seeds available at preview time and explicitly show `n/expected`; the size exponent is withheld. Figures 5 and 10 preview their quantitative content without the final manuscript morphology or size-fit panels. All previews are watermarked **PROVISIONAL** and are never accepted as publication CSVs or final Figures 5–10. Continue to use stages 5 and 6 after the prescribed runs finish.
+The preview writes time-stamped PNG files and a coverage/provenance manifest under `run-sets/manuscript-jobs8/figures/previews/`. Select any of `--figures 5 6 7 8 9 10`; use `--format pdf` or `--format both` if useful, and `--dry-run` for coverage without files. A missing solver or state is omitted visibly, and a Figure 6 comparison appears only when its Binary reference and comparator are both complete. Figure 10 means use the completed seeds available at preview time and explicitly show `n/expected`; the size exponent is withheld. Figures 5 and 10 preview their quantitative content without the final manuscript morphology or size-fit panels. All previews are watermarked **PROVISIONAL** and are never accepted as publication CSVs or final Figures 5–10. Use `process_results.bat` and `make_figures.bat` after the prescribed runs finish.
 
 ## 10. Run Campaign B
 
 B uses all four k=6 states: x_A=0.20/0.40 crossed with T*=0.75/1.25, seed 1, eleven paths. It contains 44 identities; the representative state reuses valid A results, leaving 33 additional trajectories.
 
 ```powershell
-.\04_run_manuscript_campaigns.bat --run-set manuscript-jobs8 --campaign B --jobs 8 --resume
+.\scripts\windows\run_campaigns.bat --run-set manuscript-jobs8 --campaign B --jobs 8 --resume
 if ($LASTEXITCODE -ne 0) { throw 'Campaign B stopped; inspect status before continuing.' }
 ```
 
 B supports Figures 6 and 9. To process all figures supported by the completed A+B dataset:
 
 ```powershell
-.\05_process_results.bat --run-set manuscript-jobs8 --figures 5 6 7 8 9
+.\scripts\windows\process_results.bat --run-set manuscript-jobs8 --figures 5 6 7 8 9
 if ($LASTEXITCODE -ne 0) { throw 'Campaign A+B processing failed.' }
-.\06_make_figures.bat --run-set manuscript-jobs8 --figures 5 6 7 8 9
+.\scripts\windows\make_figures.bat --run-set manuscript-jobs8 --figures 5 6 7 8 9
 if ($LASTEXITCODE -ne 0) { throw 'Campaign A+B plotting failed.' }
 ```
 
@@ -251,7 +254,7 @@ C holds x_A=0.20 and T*=0.75 fixed. Every seed still runs to 30000 common MCS wi
 C contains 6435 identities and adds 6424 after A. Figure 10 requires every prescribed endpoint, including the k=6 A results.
 
 ```powershell
-.\04_run_manuscript_campaigns.bat --run-set manuscript-jobs8 --campaign C --jobs 8 --resume
+.\scripts\windows\run_campaigns.bat --run-set manuscript-jobs8 --campaign C --jobs 8 --resume
 if ($LASTEXITCODE -ne 0) { throw 'Campaign C stopped; inspect status before continuing.' }
 ```
 
@@ -264,25 +267,25 @@ Each example below launches real calculations. Choose the examples you intend to
 **Full matrix, manuscript maximum-eight policy:**
 
 ```powershell
-.\04_run_manuscript_campaigns.bat --run-set manuscript-jobs8 --campaign all --jobs 8 --resume
+.\scripts\windows\run_campaigns.bat --run-set manuscript-jobs8 --campaign all --jobs 8 --resume
 ```
 
 **Full matrix, deliberate sequential comparison:**
 
 ```powershell
-.\04_run_manuscript_campaigns.bat --run-set manuscript-sequential --campaign all --jobs 1 --resume
+.\scripts\windows\run_campaigns.bat --run-set manuscript-sequential --campaign all --jobs 1 --resume
 ```
 
 **Selected solvers, maximum-eight policy:**
 
 ```powershell
-.\04_run_manuscript_campaigns.bat --run-set selected-jobs8 --campaign all --solvers binary partial-filter rate-category spparks-sweep --jobs 8 --resume
+.\scripts\windows\run_campaigns.bat --run-set selected-jobs8 --campaign all --solvers binary partial-filter rate-category spparks-sweep --jobs 8 --resume
 ```
 
 **The same selected solvers, sequential comparison:**
 
 ```powershell
-.\04_run_manuscript_campaigns.bat --run-set selected-sequential --campaign all --solvers binary partial-filter rate-category spparks-sweep --jobs 1 --resume
+.\scripts\windows\run_campaigns.bat --run-set selected-sequential --campaign all --solvers binary partial-filter rate-category spparks-sweep --jobs 1 --resume
 ```
 
 Full solver IDs shown by `--list-solvers` are accepted. Friendly aliases are `classical`, `partial-filter`, `generic`, `binary`, `rate-category`, `exact-class`, `spparks-sweep`, `spparks-linear`, `spparks-tree`, `kmcos` and `kmc-lattice`. Here `binary` means Active-Filtered Binary; the canonical ID `nanokmc_bit_encoded` means Classical.
@@ -290,8 +293,8 @@ Full solver IDs shown by `--list-solvers` are accepted. Friendly aliases are `cl
 State aliases are `x20-t075`, `x20-t125`, `x40-t075`, `x40-t125` and `k3`/`k4`/`k5`/`k6`. `--sizes` selects k, not N. Selections intersect; seeds outside a state's prescribed ensemble are not invented. Preview examples:
 
 ```powershell
-.\04_run_manuscript_campaigns.bat --run-set selected-jobs8 --campaign B --solvers binary spparks-sweep --states x40-t125 --seeds 1 --jobs 8 --dry-run
-.\04_run_manuscript_campaigns.bat --run-set selected-jobs8 --campaign C --solvers binary --sizes 3 --seeds 1-8 --jobs 8 --dry-run
+.\scripts\windows\run_campaigns.bat --run-set selected-jobs8 --campaign B --solvers binary spparks-sweep --states x40-t125 --seeds 1 --jobs 8 --dry-run
+.\scripts\windows\run_campaigns.bat --run-set selected-jobs8 --campaign C --solvers binary --sizes 3 --seeds 1-8 --jobs 8 --dry-run
 ```
 
 Remove `--dry-run` only when you intend to run those full trajectories. Space-separated lists and quoted comma lists, such as `--seeds '1,3,5'`, are supported. `--limit 1` limits the invocation to one **new full trajectory**; it does not shorten that trajectory. The small check in section 7 is the appropriate initialization test.
@@ -303,7 +306,7 @@ A selected-solver dataset remains incomplete for an eleven-path publication figu
 For a detailed read-only status report:
 
 ```powershell
-.\04_run_manuscript_campaigns.bat --run-set manuscript-jobs8 --campaign all --status
+.\scripts\windows\run_campaigns.bat --run-set manuscript-jobs8 --campaign all --status
 ```
 
 Status distinguishes pending, running, failed/incomplete, complete and stale/corrupt records as applicable. Running-state diagnosis checks process identity and the operating-system lock; it does not accept an unsealed attempt as complete. A stale running record left after a terminated process is not proof that a job is still alive.
@@ -321,7 +324,7 @@ Press **Ctrl+C once and allow cleanup to finish**. The coordinator stops its own
 Repeat the same selection and policy to resume:
 
 ```powershell
-.\04_run_manuscript_campaigns.bat --run-set manuscript-jobs8 --campaign all --jobs 8 --resume
+.\scripts\windows\run_campaigns.bat --run-set manuscript-jobs8 --campaign all --jobs 8 --resume
 ```
 
 `--resume` is the normal behavior even when omitted. Existing results are reused only when their run identity, run-set, requested jobs, frozen sources, built artifacts, model, harness and environment fingerprints still match and their files validate. `--rerun` explicitly creates new attempts for selected runs while retaining old attempts. It does not change a run-set's job policy.
@@ -335,9 +338,9 @@ If you rebuild, update the harness or change dependencies, stale results may no 
 After A, B and C are complete in one run-set:
 
 ```powershell
-.\05_process_results.bat --run-set manuscript-jobs8 --validate-only
+.\scripts\windows\process_results.bat --run-set manuscript-jobs8 --validate-only
 if ($LASTEXITCODE -ne 0) { throw 'Input validation failed; no publication tables should be trusted.' }
-.\05_process_results.bat --run-set manuscript-jobs8
+.\scripts\windows\process_results.bat --run-set manuscript-jobs8
 if ($LASTEXITCODE -ne 0) { throw 'Result processing failed.' }
 ```
 
@@ -352,9 +355,9 @@ The scientific definitions are fixed: `rho_AB=N_AB/(6N)`, cutoff-12 matrix conce
 ## 15. Generate Figures 5–10 in Python
 
 ```powershell
-.\06_make_figures.bat --run-set manuscript-jobs8 --validate-only
+.\scripts\windows\make_figures.bat --run-set manuscript-jobs8 --validate-only
 if ($LASTEXITCODE -ne 0) { throw 'Figure inputs or provenance are invalid.' }
-.\06_make_figures.bat --run-set manuscript-jobs8
+.\scripts\windows\make_figures.bat --run-set manuscript-jobs8
 if ($LASTEXITCODE -ne 0) { throw 'Figure generation failed.' }
 ```
 
@@ -365,9 +368,9 @@ Morphology panels use the exported coordinates and Python rendering. RasMol-comp
 For a sequential dataset, use its name consistently at both stages:
 
 ```powershell
-.\05_process_results.bat --run-set manuscript-sequential
+.\scripts\windows\process_results.bat --run-set manuscript-sequential
 if ($LASTEXITCODE -ne 0) { throw 'Sequential result processing failed.' }
-.\06_make_figures.bat --run-set manuscript-sequential
+.\scripts\windows\make_figures.bat --run-set manuscript-sequential
 if ($LASTEXITCODE -ne 0) { throw 'Sequential figure generation failed.' }
 ```
 
@@ -406,7 +409,7 @@ The nine CSV exports and complete row counts are:
 
 `fig05_configurations.json` identifies the thirteen exports: all eleven paths at requested 3000 common MCS, plus Binary at 0 and 30000. This produces twenty-six species-split XYZ files without invoking RasMol. Keep configuration and publication manifests with the data; filenames alone do not establish source or execution identity.
 
-## 17. Interpreting differences from historical figures
+## 17. Interpreting differences from the manuscript
 
 The target is the specified model, observables, campaign and algorithms. Do not expect pixel-identical morphology or equal pointwise trajectories. NanoKMC, SPPARKS, kmcos and KMC_Lattice have different native initializers and random streams. Equal seed labels do not imply identical initial site assignments or exactly equal A counts. Requested observation labels correspond across solvers; realized native times and counters may differ.
 
@@ -414,7 +417,7 @@ Figure 6 uses repeated observations from four trajectories per comparator, not 7
 
 Runtime differences depend on processor, operating system, background load, frequency/power management, compiler, runtime libraries and job overlap. Jobs 8 and jobs 1 are separate measurements. The harness preserves each solver's native timer boundaries and in-loop reporting; it does not replace them with launch-to-exit wall time or subtract estimated I/O overhead. Do not interpret a different wall-clock value alone as a model failure.
 
-Two historical uncertainties remain explicit: the complete lineage from measured NanoKMC binaries to the frozen release is not established, and the evidenced SPPARKS build uses plain-MSYS GNU 15.3.0 although the manuscript states GNU 16.2.0 generally. The current main Python environment and explicit kmcos code-generation hash seed are declared reproduction choices, not reconstructed historical facts. See [PROVENANCE.md](docs/PROVENANCE.md) and [KMCOS_BUILD_PROVENANCE.md](docs/KMCOS_BUILD_PROVENANCE.md).
+Two manuscript-provenance uncertainties remain explicit: the complete lineage from measured NanoKMC binaries to the frozen release is not established, and the evidenced SPPARKS build uses plain-MSYS GNU 15.3.0 although the manuscript states GNU 16.2.0 generally. The current main Python environment and explicit kmcos code-generation hash seed are declared reproduction settings; the manuscript values are not established. See [PROVENANCE.md](docs/PROVENANCE.md) and [KMCOS_BUILD_PROVENANCE.md](docs/KMCOS_BUILD_PROVENANCE.md).
 
 ## 18. Troubleshooting
 
@@ -423,9 +426,9 @@ Two historical uncertainties remain explicit: the complete lineage from measured
 | A batch launcher cannot find Python | Re-enter the clone root and set `BENCHMARK_PYTHON` to `.venv\Scripts\python.exe`; inspect local path configuration. |
 | Environment version or package check fails | Install the exact locked interpreter/package in its intended environment. Read `logs/environment_check.json`; do not bypass the check or silently upgrade. |
 | An exact compiler/package archive is unavailable | Follow the verified routes and qualifications in `docs/TOOLCHAINS.md`. Preserve the error; an arbitrary current MSYS2 package is not an equivalent lock. |
-| Sources are missing or the pinned object is absent | Use stage 2 `--fetch` for authorized network acquisition, or configure an offline repository containing the exact commit. |
+| Sources are missing or the pinned object is absent | Use `fetch_or_verify_sources.bat --fetch` for network acquisition, or configure an offline repository containing the exact commit. |
 | Build fails, including a C++/Fortran compatibility error | Inspect the package build log and exact compiler route. Do not patch upstream scientific source or change flags ad hoc. |
-| kmcos Python import-library preparation fails | Read the stage-1 `kmcos_python_import_library` check and the stage-3 error. Confirm the declared Python 3.10.11 DLL and pinned MSYS2 `gendef`/`dlltool` packages; rerun stage 3 after correcting the environment. It regenerates an absent, stale or unverified library automatically. |
+| kmcos Python import-library preparation fails | Read `kmcos_python_import_library` in the environment report and the build error. Confirm the declared Python 3.10.11 DLL and pinned MSYS2 `gendef`/`dlltool` packages; rerun `build_all.bat` after correcting the environment. It regenerates an absent, stale or unverified library automatically. |
 | kmcos f2py fails or the compiled extension cannot import | Check the dedicated CPython 3.10.11, NumPy 1.26.4, setuptools 65.5.0 environment, the import-library record in `logs/build_kmcos.json`, and declared UCRT64 runtime DLLs. |
 | A projected path is too long, or a native snapshot is missing | Use a shorter local clone location and short run-set name before starting a fresh dataset. The native exporter may still fail at the traditional Windows path limit. Preserve an existing failed attempt for diagnosis. |
 | A run-set is registered for another job limit | Choose another `--run-set`; do not edit `run_set.json` or merge execution policies. |
@@ -438,9 +441,9 @@ Two historical uncertainties remain explicit: the complete lineage from measured
 | Storage fills or the machine restarts | Preserve existing data, restore sufficient space, check status and resume. Unsealed partial files are not accepted. |
 | Runtime differs from the manuscript | Compare the recorded hardware, toolchains, concurrency and native timing definitions before drawing a scientific conclusion. |
 
-## 19. Optional single-command front door
+## 19. Optional full-workflow launcher
 
-The staged commands above are easier to inspect and diagnose. After dependencies are installed, sources acquired and local paths configured, the front door can orchestrate the same full workflow. Its dry run does not verify builds or launch calculations:
+The staged commands above are easier to inspect and diagnose. After dependencies are installed, sources acquired and local paths configured, the root launcher can orchestrate the same full workflow. Its dry run does not verify builds or launch calculations:
 
 ```powershell
 .\reproduce_manuscript.bat --run-set manuscript-jobs8 --jobs 8 --dry-run
@@ -453,7 +456,4 @@ The next command **builds/verifies and starts the full A–C reproduction**, the
 if ($LASTEXITCODE -ne 0) { throw 'Reproduction stopped; inspect the failed stage before resuming.' }
 ```
 
-`--collect-existing` may be added to verify existing builds instead of recompiling; `--smoke` adds the small initialization checks. The front door does not silently fetch missing upstream repositories. Use stage 2 explicitly first. Running it without `--execute` or `--dry-run` displays help.
-
-
-
+`--collect-existing` may be added to verify existing builds instead of recompiling; `--smoke` adds the small initialization checks. The root launcher does not fetch missing upstream repositories. Run `fetch_or_verify_sources.bat --fetch` explicitly first. Running it without `--execute` or `--dry-run` displays help.
